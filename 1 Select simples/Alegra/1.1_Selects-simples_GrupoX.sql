@@ -168,16 +168,28 @@ Lista de espacios que no son Aula del floorid = 1
 Lista de los tipos de componentes que tienen duracion de la garantia de las partes
 del facility 1
 */
+select name, warrantydurationparts, facilityid
+from component_types
+where
+    warrantydurationparts is not null
+    and facilityid = 1;
 
 /* 30
 Lista de los tipos de componentes que no tiene el coste de repuesto
 del facility 1
 */
+select name, replacementcost
+from component_types
+where replacementcost is null;
 
 /* 31
 Lista de los tipos de componentes que tienen en el nombre un guión bajo
 del facility 1
 */
+select *
+from component_types p
+where p.name like '%\_%' escape '\'
+and p.facilityid = 1;
 
 --
 ------------------------------------------------------------------------------------------------

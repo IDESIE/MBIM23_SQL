@@ -57,36 +57,81 @@ Nombre, número de modelo del tipo de componente con id = 60
 /* 11
 Nombre y fecha de instalación de los componentes del espacio 60 ordenados descendentemente por la fecha de instalación
 */
-
+select
+    name,
+    installatedon,
+    spaceid
+from components
+where
+    spaceid = 60
+order by installatedon desc;
 /* 12
 Listar las distintas fechas de instalación de los componentes del facility 1 ordenados descendentemente.
 */
-
+select DISTINCT
+    installatedon
+from components
+where 
+    facilityid = 1
+order by installatedon DESC;
 /* 13
 Listar los distintos GUIDs de los componentes del facility 1 ordenados ascendentemente por fecha de garantía.
 */
-
+select DISTINCT
+    externalidentifier
+from components
+where 
+    facilityid = 1
+order by warrantystarton ASC;
 /* 14
 Id, código de activo, GUID, número de serie y nombre de los componentes cuyo spaceid está entre 10 y 27 inclusive
 ordenados por id de espacio descendentemente.
 */
-
+select
+    id,
+    assetidentifier,
+    serialnumber,
+    externalidentifier,
+    name
+from components
+where 
+  spaceid >= 10 AND spaceid <=27
+order by spaceid DESC;
 /* 15
 Id, código de activo, GUID, número de serie y nombre de los componentes del facility 1 
 ordenados por código de activo descendentemente.
 */
-
+select
+    id,
+    assetidentifier,
+    serialnumber,
+    externalidentifier,
+    name
+from components
+where 
+  facilityid = 1
+order by assetidentifier DESC;
 /* 16
 Códigos de activo de los componentes del espacio con id 21
 ordenados por código de activo descendentemente.
 */
-
+select
+    assetidentifier
+from components
+where 
+  spaceid = 21
+order by assetidentifier DESC;
 /* 17
 Las distintas fechas de instalación de los componentes 
 de los espacios con id 10, 12, 16, 19 
 ordenadas descendentemente.
 */
-
+select DISTINCT
+    installatedon
+from components
+where 
+  spaceid = 10 OR spaceid = 12 OR spaceid = 16 OR spaceid = 19
+order by installatedon DESC;
 /* 18
 Nombre, volumen, de los espacios
 cuyo volumen es mayor a 90 de floorid = 1

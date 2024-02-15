@@ -21,11 +21,15 @@ Datos de la tabla component_types
 /* 5
 Id, nombre de los facilities
 */
-
+select
+    id, name
+from facilities;
 /* 6
 Nombre, elevación e id del facility de las plantas
 */
-
+select
+    name, elevation, facilityid
+from floors;
 /* 7
 Nombre, area bruta, volumen de los espacios
 */
@@ -37,6 +41,12 @@ Nombre, vida útil de los tipos de componentes del facility 1
 /* 9
 Nombre de los espacios de la Planta 1 del facility 1
 */
+select
+    name,
+    floorid
+from spaces
+where
+    floorid = 1;
 /*Previamente se consulta cuál es el floorid
 listando los */
 

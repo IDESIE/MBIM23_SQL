@@ -4,15 +4,16 @@
 /* 1
 Describir la tabla floors
 */
-
+desc floors;
 /* 2
 Describir la tabla spaces
 */
-
+desc spaces;
 /* 3
 Datos de la tabla components
 */
-
+select *
+from components;
 /* 4
 Datos de la tabla component_types
 */

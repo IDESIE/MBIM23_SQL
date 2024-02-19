@@ -54,7 +54,10 @@ del facility 1.
 Mostrar el porcentaje de componentes que tienen fecha de inicio de garantía
 del facility 1.
 */
-
+select
+   round(count(warrantystarton)/count(*)*100,2)||'%'
+from components
+where facilityid = 1;
 /* 9
 Listar las cuatro primeras letras del nombre de los espacios sin repetir
 del facility 1. 
@@ -67,7 +70,12 @@ Pasi
 Pati
 Serv
 */
-
+select distinct
+   substr(name,1,4)
+from spaces
+where floorid = 1
+and name like '____%'
+order by 1 asc;
 /* 10
 Número de componentes por fecha de instalación del facility 1
 ordenados descendentemente por la fecha de instalación
@@ -87,7 +95,13 @@ Año Componentes
 2021 344
 2020 2938
 */
-
+select
+    to_char(installatedon, 'yyyy') Año,
+    count(id) Componentes
+from components
+where facilityid = 1
+group by to_char(installatedon, 'yyyy')
+order by 1 desc;
 /* 12
 Nombre del día de instalación y número de componentes del facility 1.
 ordenado de lunes a domingo
@@ -102,7 +116,16 @@ Viernes  	468
 Sábado   	404
 Domingo  	431
 */
-
+select
+    to_char(installatedon, 'day') día,
+    to_char(installatedon, 'd'),
+    count(id) Componentes
+from components
+where facilityid = 1 
+group by 
+    to_char(installatedon, 'day'),
+    to_char(installatedon, 'd')
+order by to_char(installatedon, 'd') desc;
 /*13
 Mostrar en base a los cuatro primeros caracteres del nombre cuántos espacios hay
 del floorid 1 ordenados ascendentemente por el nombre.

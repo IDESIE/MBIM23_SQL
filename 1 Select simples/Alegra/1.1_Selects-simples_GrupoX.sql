@@ -17,7 +17,8 @@ from components;
 /* 4
 Datos de la tabla component_types
 */
-
+select *
+from component_types 
 /* 5
 Id, nombre de los facilities
 */
@@ -33,7 +34,11 @@ from floors;
 /* 7
 Nombre, area bruta, volumen de los espacios
 */
-
+select 
+    name,
+    grossarea,
+    volume   
+from spaces; 
 /* 8
 Nombre, vida útil de los tipos de componentes del facility 1
 */
@@ -53,7 +58,11 @@ listando los */
 /* 10
 Nombre, número de modelo del tipo de componente con id = 60
 */
-
+select 
+    name,
+    modelnumber
+from component_types
+where id = 60;
 /* 11
 Nombre y fecha de instalación de los componentes del espacio 60 ordenados descendentemente por la fecha de instalación
 */
@@ -137,12 +146,23 @@ Nombre, volumen, de los espacios
 cuyo volumen es mayor a 90 de floorid = 1
 ordenados por volumen descendentemente
 */
-
+select 
+    name,
+    volume
+from spaces
+where floorid = 1
+and volume > 60; 
 /* 19
 Nombre, volumen de los espacios
 cuyo volumen es mayor a 6 y menor a 9 de la planta con id = 1
 */
-
+select 
+    name,
+    volume
+from spaces
+where floorid = 1
+and volume > 6
+and volume < 9;
 /* 20
 Nombre, código de activo, número de serie de los componentes
 que no tengan espacio del facility 1

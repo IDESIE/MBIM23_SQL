@@ -148,7 +148,14 @@ Nombre, código de activo, número de serie de los componentes
 que no tengan espacio del facility 1
 ordenados descendentemente por código de activo
 */
-
+select
+    name,
+    assetidentifier,
+    serialnumber,
+    spaceid
+from components
+where facilityid = 1
+    and spaceid is null;
 /* 21
 Nombre, código de activo, número de serie de los componentes
 que tengan número de serie del facility 1
@@ -161,7 +168,12 @@ Nombre de los espacios que empiezan por la letra A donde floorid = 1
 /* 23
 Lista de espacios que su segunda letra es una 's' donde floorid = 1
 */
-
+select
+    name,
+    floorid
+from spaces
+where floorid = 1
+and name like '_s%';
 /* 24
 Lista de tipos de componente del facility 1 
 donde el nombre contiene el texto 'con'
@@ -174,7 +186,15 @@ pero como volumen una etiqueta que indique
 'BAJO' si es menor a 10, 'ALTO' si es mayor a 1000
 y 'MEDIO' si está entre medias
 */
-
+select
+    name,
+    volume,
+    case
+        when volume < 10 then 'BAJO'
+        when volume > 1000 then 'ALTO'
+        else 'MEDIO'
+    end Volumen
+from spaces;
 /* 26
 Nombre, fecha de instalación, fecha de garantia
 de los componentes del facility 1

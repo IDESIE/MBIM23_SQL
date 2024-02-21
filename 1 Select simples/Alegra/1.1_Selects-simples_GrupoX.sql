@@ -4,40 +4,65 @@
 /* 1
 Describir la tabla floors
 */
-
+desc floors;
 /* 2
 Describir la tabla spaces
 */
-
+desc spaces;
 /* 3
 Datos de la tabla components
 */
-
+select from components
 /* 4
 Datos de la tabla component_types
 */
-
+select from component_types
 /* 5
 Id, nombre de los facilities
 */
-
+select
+    ID,
+    name
+from   
+    facilities
 /* 6
 Nombre, elevación e id del facility de las plantas
 */
-
+select
+    name,
+    elevation,
+    facilityid
+from 
+    floors
 /* 7
 Nombre, area bruta, volumen de los espacios
 */
-
+select
+    name,
+    grossarea,
+    volume
+from
+    spaces
 /* 8
 Nombre, vida útil de los tipos de componentes del facility 1
 */
+select
+    name,
+    expectedlife,
+from 
+    component_types
+where facilityid = 1
 
 /* 9
 Nombre de los espacios de la Planta 1 del facility 1
 */
 /*Previamente se consulta cuál es el floorid
 listando los */
+select
+    name
+from 
+    spaces 
+where floorid and facilityid = 1
 
 /* 10
 Nombre, número de modelo del tipo de componente con id = 60

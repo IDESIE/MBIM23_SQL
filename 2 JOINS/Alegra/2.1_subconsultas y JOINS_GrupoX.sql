@@ -46,7 +46,12 @@ having count (components.name) = 5;
 ¿Cuál es el id y assetidentifier de los componentes
 que están en el espacio llamado CAJERO?
 */
-
+select
+    spaces.name,
+    components.id, 
+    components.assetidentifier
+from spaces join components on spaces.id = components.spaceid
+where spaces.name = 'CAJERO'
 
 /*8
 ¿Cuántos componentes
@@ -60,7 +65,14 @@ y de la tabla components: spaceid, id, assetidentifier
 de los componentes con id 10000, 20000, 30000
 aunque no tengan datos de espacio.
 */
-
+select
+    spaces.id,
+    spaces.name,
+    components.name,
+    components.assetidentifier,
+    components.id 
+from spaces right join components on spaces.id = components.spaceid
+where components.id = 10000 or components.id = 20000 or components.id = 30000;
 
 /*
 10

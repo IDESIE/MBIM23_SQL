@@ -35,7 +35,12 @@ de los componentes con id 10000, 20000, 300000
 /*6
 ¿Cuál es el nombre de los espacios que tienen cinco componentes?
 */
-
+select
+    spaces.name,
+    count (components.name)
+from spaces join components on spaces.id = components.spaceid
+group by spaces.name
+having count (components.name) = 5;
 
 /*7
 ¿Cuál es el id y assetidentifier de los componentes

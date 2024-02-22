@@ -6,6 +6,7 @@ Listar de la tabla facilities el id y nombre,
 además de la tabla floors el id, nombre y facilityid
 */
 
+
 /*2
 Lista de id de espacios que no están en la tabla de componentes (spaceid)
 pero sí están en la tabla de espacios.
@@ -16,6 +17,12 @@ pero sí están en la tabla de espacios.
 Lista de id de tipos de componentes que no están en la tabla de componentes (typeid)
 pero sí están en la tabla de component_types
 */
+select
+    id
+from component_types
+where id not in (
+    select typeid
+    from components);
 
 
 /*4
@@ -35,7 +42,13 @@ de los componentes con id 10000, 20000, 300000
 /*6
 ¿Cuál es el nombre de los espacios que tienen cinco componentes?
 */
-
+select
+    spaces.name spacesName,
+    count(components.name)
+from
+    components join spaces on components.spaceid = spaces.id
+group by spaces.name
+having count(components.name) = 5;
 
 /*7
 ¿Cuál es el id y assetidentifier de los componentes
@@ -227,13 +240,16 @@ Nombre del día en el que más componentes se instalaron del facility 1.
 Ejemplo: Jueves
 */
 
+
 /*29
 Listar los nombres de componentes que están fuera de garantía del facility 1.
 */
+
 
 /*
 30
 Listar el nombre de los tres espacios con mayor área del facility 1
 */
+
 
 ------------------------------------------------------------------------------------------------

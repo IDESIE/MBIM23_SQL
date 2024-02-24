@@ -162,14 +162,26 @@ Aula 23
 Aseo 12
 Pasi 4
 */
-
+select
+    substr(spaces.name, 1, 4),
+    count(substr(spaces.name, 1, 4))
+from spaces
+where floorid = 1
+group by substr(name, 1, 4)
+order by 1 asc;
 
 
 /*14
 Cuántos componentes de instalaron un Jueves
 en el facilityid 1
 */
-
+select
+    to_char(installatedon, 'day') Día,
+    count(id) Componentes
+from components
+where facilityid = 1
+    and trim(to_char(installatedon, 'day')) = 'jueves'
+group by to_char(installatedon, 'day');
 
 
 /*15
@@ -179,7 +191,9 @@ y seguido del nombre del espacio.
 el id del espacio debe tener una longitud de 3 caracteres
 Ej. 3-004-Nombre
 */
-
+select
+    floorid || '-' || lpad(id, 3, '0') || '-' || name
+from spaces;
 
  
 ------------------------------------------------------------------------------------------------

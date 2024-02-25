@@ -285,13 +285,29 @@ order by
 Nombre, código de activo, número de serie de los componentes
 que tengan número de serie del facility 1
 */
-
+select
+    name,
+    assetidentifier,
+    serialnumber
+from
+    components
+where
+    facilityid = 1
+        and
+    serialnumber is not null
 
 
 /* 22
 Nombre de los espacios que empiezan por la letra A donde floorid = 1
 */
-
+select
+    name
+from
+    spaces
+where
+    floorid = 1
+        and
+    substr(name,1,1) = 'A'
 
 
 /* 23

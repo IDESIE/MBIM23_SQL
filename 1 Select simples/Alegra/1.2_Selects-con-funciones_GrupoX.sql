@@ -14,7 +14,12 @@ Y de etiqueta del campo "Fecha actual".
 */
 --select to_char(sysdate, 'Day')
 -- from dual;
-
+select 
+    to_char(sysdate, 'Day, DD "de" Month "de" YYYY. HH24:MI:SS') 
+     as
+    "Fecha actual"
+from
+    dual
 
 /* 2
 Día en palabras de cuando se instalaron los componentes

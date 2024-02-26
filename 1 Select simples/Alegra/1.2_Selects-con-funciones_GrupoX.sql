@@ -12,20 +12,25 @@ la palabra "de", el mes en minúscula en palabras, la palabra "de", el año en c
 finalizando con un punto. Luego la hora en formato 24h con minutos y segundos.
 Y de etiqueta del campo "Fecha actual".
 */
---select to_char(sysdate, 'Day')
--- from dual;
 select 
-    to_char(sysdate, 'Day, DD "de" Month "de" YYYY. HH24:MI:SS') 
+    trim(to_char(sysdate, 'Day')) || ', '
+    || to_char(sysdate, 'DD') || ' de '
+    || trim(to_char(sysdate, 'Month')) || ' de '
+    || to_char(sysdate, 'YYYY') || '. '
+    || to_char(sysdate, 'HH24:MI:SS')
      as
     "Fecha actual"
 from
-    dual
+    dual;
+
 
 /* 2
 Día en palabras de cuando se instalaron los componentes
 del facility 1
 */
-
+select trim(to_char(installatedon, 'Day'))
+from components
+where facilityid = 1;
 
 
 /* 3
@@ -48,7 +53,10 @@ ConEspacio  Componentes
 ----------------------------
 3500  4000
 */
-
+select count(spaceid) ConEspacio,
+    count(id) Componentes
+from components
+where facilityid = 1;
 
 
 /* 5
@@ -59,11 +67,17 @@ Mostrar tres medias que llamaremos:
 de los espacios del floorid 1
 Solo la parte entera, sin decimales ni redondeo.
 */
-
+select
+    trunc(avg(grossarea), 0) Media,
+    trunc((avg(grossarea) + min(grossarea)) / 2, 0) MediaBaja,
+    trunc((avg(grossarea) + max(grossarea)) / 2, 0) MediaAlta
+from spaces
+where floorid = 1;
 
 
 /* 6
-Cuántos componentes hay, cuántos tienen fecha inicio de garantia, cuántos tienen espacio, y en cuántos espacios hay componentes
+Cuántos componentes hay, cuántos tienen fecha inicio de garantía,
+cuántos tienen espacio, y en cuántos espacios hay componentes
 en el facility 1.
 */
 
@@ -73,7 +87,7 @@ en el facility 1.
 Mostrar cuántos espacios tienen el texto 'Aula' en el nombre
 del facility 1.
 */
-
+-- Requiere JOIN
 
 
 /* 8
@@ -114,7 +128,14 @@ Fecha   Componentes
 2021-03-23 34
 2021-03-03 232
 */
-
+select
+    to_char(installatedon, 'YYYY-MM-DD') Fecha,
+    count(to_char(installatedon, 'YYYY-MM-DD')) Componentes
+from
+    components
+where facilityid = 1
+group by to_char(installatedon, 'YYYY-MM-DD')
+order by 1 desc;
 
 
 /* 11

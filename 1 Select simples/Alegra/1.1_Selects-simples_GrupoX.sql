@@ -183,8 +183,9 @@ select
     serialnumber,
     spaceid
 from components
-where facilityid =2
-    and spaceid is null;
+where facilityid = 1
+    and spaceid is null
+order by assetidentifier desc;
 
 
 /* 21
@@ -193,9 +194,8 @@ que tengan número de serie del facility 1
 */
 select
     name,
-    facilityid,
-    serialnumber,
-    assetidentifier
+    assetidentifier,
+    serialnumber
 from components
     where facilityid = 1
     and serialnumber is not null;
@@ -205,8 +205,7 @@ from components
 Nombre de los espacios que empiezan por la letra A donde floorid = 1
 */
 select
-    name,
-    floorid
+    name
 from spaces
     where floorid = 1
     and name like 'A%';
@@ -226,13 +225,13 @@ where floorid =1
 /* 24
 Lista de tipos de componente del facility 1 
 donde el nombre contiene el texto 'con'
-y no tienen vida útil indicada o fecha de garantia 
+y no tienen vida útil indicada o fecha de garantía de las partes 
 */
 select
     name,
     facilityid
 from component_types
-where facilityid =1
+where facilityid = 1
     and name like'%con%'
     and (warrantydurationparts is null
         or expectedlife is null);
@@ -263,7 +262,6 @@ que tienen fecha de garantia
 */
 select
     name,
-    facilityid,
     warrantystarton,
     installatedon
 from components
@@ -276,9 +274,7 @@ Lista de nombres de espacio que su id no es 4, 9, ni 19
 del floorid 1
 */
 select
-    name,
-    id, 
-    floorid
+    name
 from spaces
     where id NOT IN(4,9,19)
     and floorid = 1
@@ -289,11 +285,10 @@ order by id;
 Lista de espacios que no son Aula del floorid = 1
 */
 select
-    name,
-    floorid
+    name
 from spaces
     where floorid = 1
-    and name not like '%Aula%';
+    and lower(name) not like '%aula%';
 
 
 /* 29

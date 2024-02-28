@@ -80,7 +80,13 @@ Listar el nombre de los espacios y su área del facility 1
 ¿Cuál es el número de componentes por facility?
 Mostrar nombre del facility y el número de componentes.
 */
-
+select
+    facilities.name,
+    count (components.name)
+from
+    facilities
+    join components on facilities.id = components.facilityid
+group by facilities.name
 
 /*12
 ¿Cuál es la suma de áreas de los espacios por cada facility?
@@ -120,8 +126,20 @@ que estén en un aula y no sean tuberias, muros, techos, suelos.
 15
 Nombre, área bruta y volumen de los espacios con mayor área que la media de áreas del facility 1.
 */
-
-
+select
+    floors.name, netarea, volume
+from spaces
+    join floors on spaces.floorid = floors.id
+where
+    facilityid = 1
+    and netarea > (
+            select
+                avg(netarea)
+            from
+                spaces
+                join floors on spaces.floorid = floors.id
+            where
+                facilityid = 1);
 /*
 16
 Nombre y fecha de instalación (yyyy-mm-dd) de los componentes del espacio con mayor área del facility 1

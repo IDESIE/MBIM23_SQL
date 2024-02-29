@@ -5,12 +5,30 @@
 Listar de la tabla facilities el id y nombre, 
 además de la tabla floors el id, nombre y facilityid
 */
+select
+    facilities.id FacilitiesId,
+    facilities.name FacilitiesName,
+    floors.id FloorsId,
+    floors.name FloorsName,
+    floors.facilityid FloorsFacilityId
+from
+    facilities
+    join floors on facilities.id = floors.facilityid;
 
 
 /*2
 Lista de id de espacios que no están en la tabla de componentes (spaceid)
 pero sí están en la tabla de espacios.
 */ 
+select
+    spaces.id
+from
+    spaces
+where
+    spaces.id not in (
+            select components.spaceid
+            from components
+        );
 
 
 /*3
@@ -21,8 +39,9 @@ select
     id
 from component_types
 where id not in (
-    select typeid
-    from components);
+        select typeid
+        from components
+    );
 
 
 /*4
@@ -30,13 +49,33 @@ Mostrar de la tabla floors los campos: name, id;
 y de la tabla spaces los campos: floorid, id, name
 de los espacios 109, 100, 111
 */
+select
+    floors.name FloorsName,
+    floors.id FloorsId,
+    spaces.floorid SpacesFloorId,
+    spaces.id SpacesId,
+    spaces.name SpacesName
+from
+    floors join spaces on floors.id = spaces.floorid
+where
+    spaces.id in (100, 109, 111)
 
 
 /*5
 Mostrar de component_types los campos: material, id;
 y de la tabla components los campos: typeid, id, assetidentifier
-de los componentes con id 10000, 20000, 300000
+de los componentes con id 10000, 20000, 30000
 */
+select
+    component_types.material,
+    component_types.id,
+    components.typeid,
+    components.id,
+    components.assetidentifier
+from
+    components join component_types on components.typeid = component_types.id
+where
+    components.id in (10000, 20000, 30000);
 
 
 /*6
@@ -49,6 +88,7 @@ from
     components join spaces on components.spaceid = spaces.id
 group by spaces.name
 having count(components.name) = 5;
+
 
 /*7
 ¿Cuál es el id y assetidentifier de los componentes
@@ -87,6 +127,7 @@ from
     facilities
     join components on facilities.id = components.facilityid
 group by facilities.name
+
 
 /*12
 ¿Cuál es la suma de áreas de los espacios por cada facility?
@@ -139,7 +180,10 @@ where
                 spaces
                 join floors on spaces.floorid = floors.id
             where
-                facilityid = 1);
+                facilityid = 1
+    );
+
+
 /*
 16
 Nombre y fecha de instalación (yyyy-mm-dd) de los componentes del espacio con mayor área del facility 1

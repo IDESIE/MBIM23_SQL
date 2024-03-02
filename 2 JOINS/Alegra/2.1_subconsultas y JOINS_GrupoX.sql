@@ -94,12 +94,25 @@ having count(components.name) = 5;
 ¿Cuál es el id y assetidentifier de los componentes
 que están en el espacio llamado CAJERO?
 */
+select
+    components.id,
+    components.assetidentifier
+from
+    components join spaces on components.spaceid = spaces.id
+where
+    spaces.name = 'CAJERO';
 
 
 /*8
 ¿Cuántos componentes
 hay en el espacio llamado CAJERO?
 */
+select
+    count(*)
+from
+    components join spaces on components.spaceid = spaces.id
+where
+    spaces.name = 'CAJERO';
 
 
 /*9
@@ -108,12 +121,32 @@ y de la tabla components: spaceid, id, assetidentifier
 de los componentes con id 10000, 20000, 30000
 aunque no tengan datos de espacio.
 */
+select
+    spaces.name,
+    spaces.id,
+    components.spaceid,
+    components.id,
+    components.assetidentifier
+from
+    components full join spaces on components.spaceid = spaces.id
+where
+    components.id in (10000, 20000, 30000);
 
 
 /*
 10
 Listar el nombre de los espacios y su área del facility 1
 */
+select
+    spaces.name,
+    spaces.grossarea,
+    facilities.id
+from
+    components
+    join spaces on components.spaceid = spaces.id
+    join facilities on components.facilityid = facilities.id
+where
+    facilities.id = 1;
 
 
 /*11
@@ -122,17 +155,25 @@ Mostrar nombre del facility y el número de componentes.
 */
 select
     facilities.name,
-    count (components.name)
+    count(components.name)
 from
     facilities
     join components on facilities.id = components.facilityid
-group by facilities.name
+group by facilities.name;
 
 
 /*12
 ¿Cuál es la suma de áreas de los espacios por cada facility?
 Mostrar nombre del facility y la suma de las áreas 
 */
+select
+    facilities.name,
+    sum(spaces.grossarea)
+from
+    components
+    join spaces on components.spaceid = spaces.id
+    join facilities on components.facilityid = facilities.id
+group by facilities.name;
 
 
 /*13

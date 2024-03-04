@@ -20,15 +20,6 @@ from
 Lista de id de espacios que no están en la tabla de componentes (spaceid)
 pero sí están en la tabla de espacios.
 */ 
-select
-    spaces.id
-from
-    spaces
-where
-    spaces.id not in (
-            select components.spaceid
-            from components
-        );
 
 
 /*3
@@ -64,7 +55,7 @@ where
 /*5
 Mostrar de component_types los campos: material, id;
 y de la tabla components los campos: typeid, id, assetidentifier
-de los componentes con id 10000, 20000, 30000
+de los componentes con id 10000, 20000, 300000
 */
 select
     component_types.material,
@@ -82,13 +73,11 @@ where
 ¿Cuál es el nombre de los espacios que tienen cinco componentes?
 */
 select
-    spaces.name spacesName,
-    count(components.name)
-from
-    components join spaces on components.spaceid = spaces.id
+    spaces.name SapaceName,
+    count (components.name) ComponentsName
+from spaces join components on spaces.id = components.spaceid
 group by spaces.name
-having count(components.name) = 5;
-
+        having count (components.name)=5;
 
 /*7
 ¿Cuál es el id y assetidentifier de los componentes
@@ -202,7 +191,21 @@ de todos los componentes
 del facility 1
 que estén en un aula y no sean tuberias, muros, techos, suelos.
 */
-
+select
+    components.name Nombre,
+    spaces.name Espacio,
+    components.assetidentifier,
+    components.serialnumber,
+    to_char(components.installatedon, 'yyyy') Año 
+from components   
+    join
+        spaces on spaces.id = components.spaceid
+where FACILITYID = 1
+    and lower(spaces.name) like '%aula%'
+        and lower(components.name) not like '%suelo%'
+        and lower(components.name) not like '%muro%'
+        and lower(components.name) not like '%techo%'
+        and components.name not like '%tuberÃ-a%';
 
 /*
 15

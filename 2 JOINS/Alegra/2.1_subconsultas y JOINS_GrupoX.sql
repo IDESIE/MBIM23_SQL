@@ -346,7 +346,24 @@ Aula 1  BAJO
 Aula 2  BAJO
 Aula 3  MEDIO
 */
-
+SELECT
+    s.name AS nombre_espacio,
+    CASE
+        WHEN COUNT(CASE WHEN lower(c.name) like '%silla%' THEN 1 ELSE NULL END) < 5 THEN 'BAJO'
+        WHEN COUNT(CASE WHEN lower(c.name) like '%silla%' THEN 1 ELSE NULL END) BETWEEN 6 AND 15 THEN 'MEDIO'
+        ELSE 'ALTO'
+    END AS clasificacion_sillas
+FROM
+    spaces s
+LEFT JOIN
+    components c ON s.id = c.spaceid
+WHERE
+    c.facilityid = 1
+    AND lower(s.name) like '%aula%'
+GROUP BY
+    s.name
+ORDER BY
+    s.name ASC;
 
 
 /*

@@ -20,6 +20,15 @@ from
 Lista de id de espacios que no están en la tabla de componentes (spaceid)
 pero sí están en la tabla de espacios.
 */ 
+select
+    spaces.id
+from
+    spaces
+where
+    spaces.id not in (
+            select components.spaceid
+            from components
+        );
 
 
 /*3

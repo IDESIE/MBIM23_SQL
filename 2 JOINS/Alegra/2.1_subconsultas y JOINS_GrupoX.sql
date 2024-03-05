@@ -417,6 +417,19 @@ Listar los nombres de componentes que están fuera de garantía del facility 1.
 30
 Listar el nombre de los tres espacios con mayor área del facility 1
 */
-
-
+select
+    floors.name
+from spaces
+    join floors on spaces.floorid = floors.id
+where
+    facilityid = 1
+    and netarea > (
+    select
+                max(netarea)
+            from
+                spaces
+                join floors on spaces.floorid = floors.id
+            where
+                facilityid = 1
+    );
 ------------------------------------------------------------------------------------------------

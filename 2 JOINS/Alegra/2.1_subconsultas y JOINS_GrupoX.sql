@@ -232,28 +232,72 @@ where
 16
 Nombre y fecha de instalación (yyyy-mm-dd) de los componentes del espacio con mayor área del facility 1
 */
-
+select
+    components.name Componente,
+    spaces.name Espacio,
+    to_char(components.installatedon, 'yyyy-mm-dd') Fecha,
+    spaces.netarea Area
+from components   
+    join
+        spaces on spaces.id = components.spaceid
+where FACILITYID = 1
+    and spaces.netarea =(select
+                            max(spaces.netarea)
+                        from spaces
+                            join
+                                floors on floors.id = spaces.floorid
+                                    where floors.facilityid = 1);
 
 /*
 17
 Nombre y código de activo  de los componentes cuyo tipo de componente contenga la palabra 'mesa'
 del facility 1
 */
-
+select
+    components.name Nombre_componente,
+    components.assetidentifier,
+    components.facilityid
+from components
+    join component_types
+        on component_types.id = components.typeid   
+    where components.facilityid = 1
+        and lower(component_types.name) like '%mesa%';
 
 /*
 18
 Nombre del componente, espacio y planta de los componentes
 de los espacios que sean Aula del facility 1
 */
-
+select
+    components.name,
+    spaces.name Space,
+    spaces.floorid Floor,
+    components.facilityid Facility  
+from components
+    join spaces
+        on components.spaceid = spaces.id
+    where components.facilityid = 1 
+        and lower(spaces.name) like '%aula%';
 
 /*
 19
 Número de componentes y número de espacios por planta (nombre) del facility 1. 
 Todas las plantas.
 */
-
+select
+    f.id AS id_planta,
+    COUNT(DISTINCT s.id) AS total_espacios,
+    COUNT(c.id) AS total_componentes
+from
+    floors f
+left join
+    spaces s ON f.id = s.floorid
+left join
+    components c ON s.id = c.spaceid
+where
+    f.facilityid = 1
+group by
+    f.id;
 
 /*
 20
@@ -269,7 +313,24 @@ Componentes    Tipo   Espacio
 21  Mesa-cristal-redonda    Aula 12
 */
 
-
+SELECT
+    
+    COUNT(c.id) AS numero_componentes,
+    ct.name AS tipo_componente,
+    s.name AS nombre_espacio
+FROM
+    components c
+JOIN
+    component_types ct ON c.typeid = ct.id
+JOIN
+    spaces s ON c.spaceid = s.id
+WHERE
+    c.facilityid = 1
+    AND lower(ct.name) like '%mesa%'
+GROUP BY
+    s.id, s.name, ct.name
+ORDER BY
+    s.id ASC, numero_componentes DESC;
 /*
 21
 Mostrar el nombre de las Aulas y una etiqueda «Sillas» que indique
@@ -356,6 +417,19 @@ Listar los nombres de componentes que están fuera de garantía del facility 1.
 30
 Listar el nombre de los tres espacios con mayor área del facility 1
 */
-
-
+select
+    floors.name
+from spaces
+    join floors on spaces.floorid = floors.id
+where
+    facilityid = 1
+    and netarea > (
+    select
+                max(netarea)
+            from
+                spaces
+                join floors on spaces.floorid = floors.id
+            where
+                facilityid = 1
+    );
 ------------------------------------------------------------------------------------------------

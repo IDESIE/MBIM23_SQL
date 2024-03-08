@@ -36,7 +36,7 @@ values (
     to_date('2021-12-12', 'yyyy-mm-dd'),
     to_date('2021-11-11', 'yyyy-mm-dd'),
     '666000',
-    current_date,
+    sysdate,
     3,
     7,
     78,

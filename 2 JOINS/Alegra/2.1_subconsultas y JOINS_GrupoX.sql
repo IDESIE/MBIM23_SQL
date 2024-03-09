@@ -181,7 +181,6 @@ y el número de componentes de cada tipo
 ordernado por facility.
 */
 
-
 --Ejemplo
 --Alegra	Silla-Apilable_Silla-Apilable	319
 --Alegra	Silla-Brazo escritorio_Silla-Brazo escritorio	24
@@ -192,6 +191,20 @@ ordernado por facility.
 --COSTCO	Silla_Silla	40
 --COSTCO	Silla-Corbu_Silla-Corbu	14
 --COSTCO	Silla-Oficina (brazos)_Silla-Oficina (brazos)	188
+select
+    facilities.name Edificio,
+    component_types.name Nombre,
+    count(component_types.name) Número
+from
+    components
+    join facilities on components.facilityid = facilities.id
+    join component_types on components.typeid = component_types.id
+where
+    lower(component_types.name) like '%silla%'
+group by facilities.name,
+    component_types.name
+order by Edificio, Nombre;
+
 
 /*
 14
@@ -389,6 +402,7 @@ Hall    2
 */
 
 
+
 /*
 23
 Nombre y área del espacio que mayor área bruta tiene del facility 1.
@@ -400,6 +414,17 @@ Nombre y área del espacio que mayor área bruta tiene del facility 1.
 Número de componentes instalados entre el 1 de mayo de 2010 y 31 de agosto de 2010
 y que sean grifos, lavabos del facility 1
 */
+select count(*)
+from components
+    join component_types on component_types.id = components.typeid
+where components.facilityid = 1
+    and (
+        lower(component_types.name) like '%lavabo%'
+        or lower(component_types.name) like '%grifo%'
+    ) and (
+        installatedon between to_date('2010-05-01', 'yyyy-mm-dd')
+        and to_date('2010-08-31', 'yyyy-mm-dd')
+    );
 
 
 /*
@@ -426,6 +451,18 @@ Nombre del espacio, y número de grifos del espacio con más grifos del facility
 27
 Cuál es el mes en el que más componentes se instalaron del facility 1.
 */
+select
+    count(components.name),
+    to_char(components.installatedon, 'Month')
+from components
+where components.facilityid = 1
+group by to_char(components.installatedon, 'Month')
+having count(components.name) = (
+        select max(count(components.name))
+        from components
+        where components.facilityid = 1
+        group by to_char(components.installatedon, 'Month')
+    );
 
 
 /* 28
@@ -444,18 +481,13 @@ Listar los nombres de componentes que están fuera de garantía del facility 1.
 Listar el nombre de los tres espacios con mayor área del facility 1
 */
 select
-    floors.name
-from spaces
-    join floors on spaces.floorid = floors.id
-where
-    facilityid = 1
-    and netarea > (
-    select
-                max(netarea)
-            from
-                spaces
-                join floors on spaces.floorid = floors.id
-            where
-                facilityid = 1
-    );
+    rownum, spaceName, area
+from ( select rownum Fila, spaces.name spaceName, netarea Area
+        from spaces
+            join floors on spaces.floorid = floors.id
+        where facilityid = 1
+        order by 3 desc)
+where rownum < 4;
+
+
 ------------------------------------------------------------------------------------------------

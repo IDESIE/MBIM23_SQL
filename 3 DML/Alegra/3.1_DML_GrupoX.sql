@@ -98,3 +98,8 @@ where id in (select id
 /* 5
 Anonimizar los datos personales: nombre, apellido, email, teléfono de los contactos
 */
+UPDATE contacts
+SET email = DBMS_RANDOM.STRING('a', 10) || '@' || DBMS_RANDOM.STRING('a', 5) || '.com',
+    givenname = 'XXX',
+    familyname = 'XXX',
+    phone = 'XXXXXXXXX';

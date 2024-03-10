@@ -70,7 +70,8 @@ where
 /* 2
 Eliminar el componente creado.
 */
-
+delete from components
+where externalidentifier = '666000';
 /* 3
 Colocar como código de barras los 6 últimos caracteres del GUID 
 a todo componente de la planta 1 y 2 del facility 1.

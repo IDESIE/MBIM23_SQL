@@ -70,17 +70,36 @@ where
 /* 2
 Eliminar el componente creado.
 */
-
+delete from components
+where externalidentifier = '666000';
 /* 3
 Colocar como código de barras los 6 últimos caracteres del GUID 
 a todo componente de la planta 1 y 2 del facility 1.
 */
-
+UPDATE components
+SET barcode = (SELECT substr(c.externalidentifier, -6)
+    FROM components c
+    JOIN spaces s ON c.spaceid = s.id
+    WHERE (s.floorid = 1 OR s.floorid = 2) AND c.id = components.id)
+WHERE EXISTS (SELECT 1
+    FROM components c
+    JOIN spaces s ON c.spaceid = s.id
+    WHERE (s.floorid = 1 OR s.floorid = 2) AND c.id = components.id);
 /* 4
 Modificar la fecha de garantia para que sea igual a la fecha de instalación
 para todo componente que sea un grifo o lavabo del facility 1.
 */
-
+update components
+set warrantystarton = installatedon
+where id in (select id
+    from components
+    where facilityid = 1 and
+    (lower(name) like '%lavabo%' or lower(name) like '%grifo%'));
 /* 5
 Anonimizar los datos personales: nombre, apellido, email, teléfono de los contactos
 */
+UPDATE contacts
+SET email = DBMS_RANDOM.STRING('a', 10) || '@' || DBMS_RANDOM.STRING('a', 5) || '.com',
+    givenname = 'XXX',
+    familyname = 'XXX',
+    phone = 'XXXXXXXXX';

@@ -45,7 +45,28 @@ y no de forma independiente. Con el fin de comprobar las relaciones.
 Mostrar todos los datos indicados en el punto anterior 
 y además el nombre del espacio, nombre de la planta, nombre del tipo de componente
 */
-
+select
+    components.id,
+    components.name,
+    components.description,
+    components.serialnumber,
+    components.installatedon,
+    components.warrantystarton,
+    components.assetidentifier,
+    components.createdat,
+    components.creatorid,
+    components.spaceid,
+    components.typeid,
+    components.externalidentifier,
+    spaces.name,
+    floors.name,
+    component_types.name
+from components
+    join spaces on components.spaceid = spaces.id
+    join floors on floors.id = spaces.floorid
+    join component_types on components.typeid = component_types.id
+where
+   externalidentifier = '666000';
 /* 2
 Eliminar el componente creado.
 */
